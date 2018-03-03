@@ -33,6 +33,18 @@ func (self *StepConvertToTemplate) Run(state multistep.StateBag) multistep.StepA
 		return multistep.ActionHalt
 	}
 
+	err = instance.AddToOtherConfig("instant", "true")
+	if err != nil {
+		ui.Error(fmt.Sprintf("Error adding 'instant' to template's other_config: %s", err.Error()))
+		return multistep.ActionHalt
+	}
+
+	err = instance.RemoveFromOtherConfig("disks")
+	if err != nil {
+		ui.Error(fmt.Sprintf("Error removing 'disks' from template's other_config: %s", err.Error()))
+		return multistep.ActionHalt
+	}
+
 	return multistep.ActionContinue
 }
 
